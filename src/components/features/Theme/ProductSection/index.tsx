@@ -18,7 +18,7 @@ export const ProductSection = ({ themeKey }: Props) => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const data = await fetchThemeProduct(themeKey);
+        const data = await fetchThemeProduct(themeKey, 20); // Request 20 products
         setProducts(data.products);
       } catch (error) {
         console.error('Failed to fetch theme products', error);

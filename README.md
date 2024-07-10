@@ -39,10 +39,10 @@
   - **히어로 섹션 (@/components/features/Theme/HeroSection)**
     - [x] URL의 pathParams를 사용하여 구현한다.
     - [x] `/api/v1/themes` API를 사용하여 구현한다.
-    - [ ] themeKey가 잘못된 경우 메인 페이지로 리다이렉트한다.
+    - [x] themeKey가 잘못된 경우 메인 페이지로 리다이렉트한다.
   - **상품 목록 섹션 (@/components/features/Theme/ProductSection)**
-    - [ ] `/api/v1/themes/{themeKey}/products` API를 사용하여 구현한다.
-    - [ ] API 요청 시 한 번에 20개의 상품 목록을 가져온다.
+    - [x] `/api/v1/themes/{themeKey}/products` API를 사용하여 구현한다.
+    - [x] API 요청 시 한 번에 20개의 상품 목록을 가져온다.
 
 ---
 
