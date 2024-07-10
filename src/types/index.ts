@@ -31,3 +31,12 @@ export type GoodsData = {
     imageURL: string;
   };
 };
+
+export type ThemeGoodsResponse = {
+  products: GoodsData[];
+  nextPageToken?: string;
+  pageInfo: {
+    totalResults: number;
+    resultsPerPage: number;
+  };
+};
