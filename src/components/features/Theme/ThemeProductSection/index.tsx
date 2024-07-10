@@ -1,24 +1,24 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
-import { fetchThemeGoods } from '@/api/themeApi';
-import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
+import { fetchThemeProduct } from '@/api/themeApi';
+import { DefaultItems } from '@/components/common/Item/Default';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
 import { breakpoints } from '@/styles/variants';
-import type { GoodsData } from '@/types';
+import type { ProductData } from '@/types';
 
 type Props = {
   themeKey: string;
 };
 
-export const ThemeGoodsSection = ({ themeKey }: Props) => {
-  const [products, setProducts] = useState<GoodsData[]>([]);
+export const ThemeProductSection = ({ themeKey }: Props) => {
+  const [products, setProducts] = useState<ProductData[]>([]);
 
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const data = await fetchThemeGoods(themeKey);
+        const data = await fetchThemeProduct(themeKey);
         setProducts(data.products);
       } catch (error) {
         console.error('Failed to fetch theme products', error);
@@ -39,7 +39,7 @@ export const ThemeGoodsSection = ({ themeKey }: Props) => {
           gap={16}
         >
           {products.map(({ id, imageURL, name, price, brandInfo }) => (
-            <DefaultGoodsItems
+            <DefaultItems
               key={id}
               imageSrc={imageURL}
               title={name}
