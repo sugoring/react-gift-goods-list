@@ -29,9 +29,8 @@
 #### API 구현
 
 - **메인 페이지 (@/pages/Home)**
-  - **Theme 카테고리 섹션(@/components/features/Home/ThemeCategorySection)**
-    - [ ] `/api/v1/themes` API를 사용하여 구현한다.
-  - **실시간 급상승 선물 랭킹 섹션(@/components/features/Home/ProductRankingSectio)**
+  - **Theme 카테고리 섹션(@/components/features/Home/ThemeCategorySection] `/api/v1/themes` API를 사용하여 구현한다.
+  - **실시간 급상승 선물 랭킹 섹션(@/components/features/Home/RankingSection)**
     - [ ] `/api/v1/ranking/products` API를 사용하여 구현한다.
     - [ ] 필터 조건을 선택하면 해당 조건에 맞게 API를 요청하여 데이터를 보여준다.
 
