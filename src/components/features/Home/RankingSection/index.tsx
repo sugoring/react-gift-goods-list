@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { fetchRankingProducts } from '@/api/rankingApi';
 import { Container } from '@/components/common/layouts/Container';
 import { breakpoints } from '@/styles/variants';
-import type { RankingFilterOption } from '@/types';
-import { ProductMockList } from '@/types/mock';
+import type { ProductData, RankingFilterOption } from '@/types';
 
 import { RankingFilter } from './Filter';
 import { RankingList } from './List';
@@ -14,15 +14,27 @@ export const RankingSection = () => {
     targetType: 'ALL',
     rankType: 'MANY_WISH',
   });
+  const [productList, setProductList] = useState<ProductData[]>([]);
 
-  // ProductMockData를 21번 반복 생성
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const data = await fetchRankingProducts(filterOption);
+        setProductList(data);
+      } catch (error) {
+        console.error('Failed to fetch ranking products', error);
+      }
+    };
+
+    getProducts();
+  }, [filterOption]);
 
   return (
     <Wrapper>
       <Container>
         <Title>실시간 급상승 선물랭킹</Title>
         <RankingFilter filterOption={filterOption} onFilterOptionChange={setFilterOption} />
-        <RankingList ProductList={ProductMockList} />
+        <RankingList ProductList={productList} />
       </Container>
     </Wrapper>
   );
