@@ -23,8 +23,8 @@
 
 #### Type 정의
 
-- [ ] oas.yaml 파일을 토대로 `Request Type`을 정의한다.
-- [ ] oas.yaml 파일을 토대로 `Response Type`을 정의한다.
+- [x] oas.yaml 파일을 토대로 `Request Type`을 정의한다.
+- [x] oas.yaml 파일을 토대로 `Response Type`을 정의한다.
 
 #### API 구현
 

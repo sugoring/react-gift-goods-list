@@ -18,32 +18,6 @@ export type ProductData = {
     };
   };
   
-  export type ThemeData = {
-    id: number;
-    key: string;
-    label: string;
-    title: string;
-    description?: string;
-    backgroundColor: string;
-  };
-  
-  export type RankingProductsResponse = {
-    products: ProductData[];
-  };
-  
-  export type ThemesResponse = {
-    themes: ThemeData[];
-  };
-  
-  export type ThemeProductsResponse = {
-    products: ProductData[];
-    nextPageToken?: string;
-    pageInfo: {
-      totalResults: number;
-      resultsPerPage: number;
-    };
-  };
-  
   export type ProductDetailData = ProductData & {
     isAccessableProductPage: boolean;
     review: {
@@ -67,6 +41,15 @@ export type ProductData = {
     };
   };
   
+  export type ThemeData = {
+    id: number;
+    key: string;
+    label: string;
+    title: string;
+    description?: string;
+    backgroundColor: string;
+  };
+  
   export type MessageCardTemplateData = {
     id: number;
     defaultTextMessage: string;
@@ -81,4 +64,50 @@ export type ProductData = {
     profileImageURL: string;
     point: number;
   };
+  
+  export type RankingProductsResponse = {
+    products: ProductData[];
+  };
+  
+  export type ThemesResponse = {
+    themes: ThemeData[];
+  };
+  
+  export type ThemeProductsResponse = {
+    products: ProductData[];
+    nextPageToken?: string;
+    pageInfo: {
+      totalResults: number;
+      resultsPerPage: number;
+    };
+  };
+  
+  export type ProductDetailResponse = ProductDetailData;
+  
+  export type ProductOption = {
+    id: number;
+    name: string;
+    // 필요한 다른 필드들 추가
+  };
+  
+  export type ProductOptionsResponse = {
+    options: ProductOption[];
+  };
+  
+  export type MessageCardTemplatesResponse = {
+    templates: MessageCardTemplateData[];
+  };
+  
+  export type MyAccountWishProductsResponse = {
+    products: ProductData[];
+    nextPageToken?: string;
+    pageInfo: {
+      totalResults: number;
+      resultsPerPage: number;
+    };
+  };
+  
+  export type ChargePointResponse = void;  // Assuming no content is returned on success
+  
+  export type OrderProductResponse = void;  // Assuming no content is returned on success
   
