@@ -34,7 +34,7 @@ export const ThemePage = () => {
   }
 
   if (!currentTheme) {
-    return <Navigate to={RouterPath.notFound} />;
+    return <Navigate to={RouterPath.home} />;
   }
 
   return (

@@ -37,8 +37,8 @@
 
 - **Theme 페이지 (@/pages/Theme)**
   - **히어로 섹션 (@/components/features/Theme/HeroSection)**
-    - [ ] URL의 pathParams를 사용하여 구현한다.
-    - [ ] `/api/v1/themes` API를 사용하여 구현한다.
+    - [x] URL의 pathParams를 사용하여 구현한다.
+    - [x] `/api/v1/themes` API를 사용하여 구현한다.
     - [ ] themeKey가 잘못된 경우 메인 페이지로 리다이렉트한다.
   - **상품 목록 섹션 (@/components/features/Theme/ProductSection)**
     - [ ] `/api/v1/themes/{themeKey}/products` API를 사용하여 구현한다.
