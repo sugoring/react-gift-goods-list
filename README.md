@@ -44,16 +44,17 @@
     - [ ] `/api/v1/themes/{themeKey}/products` API를 사용하여 구현한다.
     - [ ] API 요청 시 한 번에 20개의 상품 목록을 가져온다.
 
-
 ---
 
 ### 2단계 - Error, Loading Status 핸들링 하기
 
 **🚀 Getting Started**
+
 - 비동기 데이터 요청 시 발생할 수 있는 Loading, Error를 생각하고 적용합니다.
 - 유저 관점에서 Loading과 Error를 어떻게 전달하면 좋을지 고민합니다.
 
 **📝 Requirements**
+
 - 본인만의 기준으로 일관된 코드를 작성합니다.
 - 각 API에서 Loading 상태에 대한 UI 대응을 합니다.
 - 데이터가 없는 경우에 대한 UI 대응을 합니다.
@@ -64,10 +65,12 @@
 ### 3단계 - 테마 별 선물 추천 API에 페이지네이션 구현하기 & React Query 사용해보기
 
 **🚀 Getting Started**
+
 - 페이지네이션의 동작 원리를 이해하고 적용합니다.
 - IntersectionObserver를 사용하여 무한 스크롤을 설계합니다.
 
 **📝 Requirements**
+
 - 본인만의 기준으로 일관된 코드를 작성합니다.
 - 스크롤을 내리면 추가로 데이터를 요청하여 보여지게 합니다.
 - 1단계에서 구현한 API를 react-query를 사용해서 구현합니다.
