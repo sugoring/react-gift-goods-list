@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:4000', 
+  baseURL: 'https://react-gift-mock-api-sugoring.vercel.app/', 
   headers: {
     'Content-Type': 'application/json',
   },

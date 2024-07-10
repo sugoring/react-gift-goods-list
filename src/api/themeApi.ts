@@ -1,9 +1,7 @@
+import axiosInstance from '@/api/axiosInstance';
+import type { ThemeGoodsResponse } from '@/types';
 
-import type { ThemeProductsResponse } from '@/types';
-
-import axiosInstance from './axiosInstance';
-
-export const fetchThemeProducts = async (themeKey: string): Promise<ThemeProductsResponse> => {
+export const fetchThemeGoods = async (themeKey: string): Promise<ThemeGoodsResponse> => {
   const response = await axiosInstance.get(`/api/v1/themes/${themeKey}/products`);
   return response.data;
 };
