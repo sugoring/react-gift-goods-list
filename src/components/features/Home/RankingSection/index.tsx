@@ -1,28 +1,40 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { fetchRankingProducts } from '@/api/rankingApi';
 import { Container } from '@/components/common/layouts/Container';
 import { breakpoints } from '@/styles/variants';
-import type { RankingFilterOption } from '@/types';
-import { GoodsMockList } from '@/types/mock';
+import type { ProductData, RankingFilterOption } from '@/types';
 
-import { GoodsRankingFilter } from './Filter';
-import { GoodsRankingList } from './List';
+import { RankingFilter } from './Filter';
+import { RankingList } from './List';
 
-export const GoodsRankingSection = () => {
+export const RankingSection = () => {
   const [filterOption, setFilterOption] = useState<RankingFilterOption>({
     targetType: 'ALL',
     rankType: 'MANY_WISH',
   });
+  const [productList, setProductList] = useState<ProductData[]>([]);
 
-  // GoodsMockData를 21번 반복 생성
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const data = await fetchRankingProducts(filterOption);
+        setProductList(data);
+      } catch (error) {
+        console.error('Failed to fetch ranking products', error);
+      }
+    };
+
+    getProducts();
+  }, [filterOption]);
 
   return (
     <Wrapper>
       <Container>
         <Title>실시간 급상승 선물랭킹</Title>
-        <GoodsRankingFilter filterOption={filterOption} onFilterOptionChange={setFilterOption} />
-        <GoodsRankingList goodsList={GoodsMockList} />
+        <RankingFilter filterOption={filterOption} onFilterOptionChange={setFilterOption} />
+        <RankingList ProductList={productList} />
       </Container>
     </Wrapper>
   );
