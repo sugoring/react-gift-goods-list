@@ -1,7 +1,7 @@
 import { Navigate, useParams } from 'react-router-dom';
 
-import { getCurrentTheme, ThemeHeroSection } from '@/components/features/Theme/ThemeHeroSection';
-import { ThemeProductSection } from '@/components/features/Theme/ThemeProductSection';
+import { getCurrentTheme, HeroSection } from '@/components/features/Theme/HeroSection';
+import { ProductSection } from '@/components/features/Theme/ProductSection';
 import { RouterPath } from '@/routes/path';
 import { ThemeMockList } from '@/types/mock';
 
@@ -15,8 +15,8 @@ export const ThemePage = () => {
 
   return (
     <>
-      <ThemeHeroSection themeKey={themeKey} />
-      <ThemeProductSection themeKey={themeKey} />
+      <HeroSection themeKey={themeKey} />
+      <ProductSection themeKey={themeKey} />
     </>
   );
 };

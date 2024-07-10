@@ -12,7 +12,7 @@ type Props = {
   themeKey: string;
 };
 
-export const ThemeProductSection = ({ themeKey }: Props) => {
+export const ProductSection = ({ themeKey }: Props) => {
   const [products, setProducts] = useState<ProductData[]>([]);
 
   useEffect(() => {

@@ -9,7 +9,7 @@ type Props = {
   themeKey: string;
 };
 
-export const ThemeHeroSection = ({ themeKey }: Props) => {
+export const HeroSection = ({ themeKey }: Props) => {
   const currentTheme = getCurrentTheme(themeKey, ThemeMockList);
 
   if (!currentTheme) {
