@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 import { fetchThemes } from '@/api/themeApi';
 import { Container } from '@/components/common/layouts/Container';
 import { breakpoints } from '@/styles/variants';
 import type { ThemeData } from '@/types';
 
-export const HeroSection = () => {
-  const { themeKey } = useParams<{ themeKey: string }>();
+type Props = {
+  themeKey: string;
+};
+
+export const HeroSection = ({ themeKey }: Props) => {
   const [currentTheme, setCurrentTheme] = useState<ThemeData | null>(null);
 
   useEffect(() => {
