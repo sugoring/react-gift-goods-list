@@ -65,8 +65,8 @@
 ### 3단계 - 테마 별 선물 추천 API에 페이지네이션 구현하기 & React Query 사용해보기
 
 1. **IntersectionObserver를 사용한 무한 스크롤 구현**
-   - [ ] IntersectionObserver를 활용하여 페이지 스크롤 위치를 감지한다.
-   - [ ] 스크롤이 일정 위치에 도달하면 추가 데이터를 요청하여 화면에 추가한다.
+   - [x] IntersectionObserver를 활용하여 페이지 스크롤 위치를 감지한다.
+   - [x] 스크롤이 일정 위치에 도달하면 추가 데이터를 요청하여 화면에 추가한다.
 
 2. **Axios를 사용한 API 호출을 react-query로 대체**
    - [ ] Axios로 구현된 API 호출을 react-query를 사용하여 대체한다.
