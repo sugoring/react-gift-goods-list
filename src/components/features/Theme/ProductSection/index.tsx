@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import axiosInstance from '@/api/axiosInstance';
 import { Loading } from '@/api/Loading';
@@ -16,47 +16,58 @@ type Props = {
 };
 
 export const ProductSection = ({ themeKey }: Props) => {
-  const [data, setData] = useState<{ products: ProductData[] } | null>(null);
+  const [data, setData] = useState<ProductData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const loader = useRef<HTMLDivElement | null>(null);
+
+  const fetchProducts = async (page: number) => {
+    setIsLoading(true);
+    try {
+      const response = await axiosInstance.get(`/api/v1/themes/${themeKey}/products`, {
+        params: {
+          maxResults: 20,
+          pageToken: page,
+        },
+      });
+      setData((prevData) => [...prevData, ...response.data.products]);
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        setError(`Error ${err.response.status}: ${err.response.data.message}`);
+      } else {
+        setError('An error occurred while fetching data.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance.get(`/api/v1/themes/${themeKey}/products`, {
-          params: {
-            maxResults: 20,
-          },
-        });
-        setData(response.data);
-      } catch (err) {
-        if (axios.isAxiosError(err) && err.response) {
-          setError(`Error ${err.response.status}: ${err.response.data.message}`);
-        } else {
-          setError('An error occurred while fetching data.');
-        }
-      } finally {
-        setIsLoading(false);
+    fetchProducts(page);
+  }, [page, themeKey]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    });
+
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
+
+    return () => {
+      if (loader.current) {
+        observer.unobserve(loader.current);
       }
     };
-
-    fetchData();
-  }, [themeKey]); // useEffect will run whenever themeKey changes
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  }, []);
 
   if (error) {
     return <NoData message={error} />;
   }
-
-  if (!data || !Array.isArray(data.products) || data.products.length === 0) {
-    return <NoData />;
-  }
-
-  const { products } = data;
 
   return (
     <Wrapper>
@@ -68,7 +79,7 @@ export const ProductSection = ({ themeKey }: Props) => {
           }}
           gap={16}
         >
-          {products.map(({ id, imageURL, name, price, brandInfo }) => (
+          {data.map(({ id, imageURL, name, price, brandInfo }) => (
             <DefaultItems
               key={id}
               imageSrc={imageURL}
@@ -78,6 +89,8 @@ export const ProductSection = ({ themeKey }: Props) => {
             />
           ))}
         </Grid>
+        {isLoading && <Loading />}
+        <div ref={loader} />
       </Container>
     </Wrapper>
   );
