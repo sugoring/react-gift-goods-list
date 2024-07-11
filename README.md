@@ -50,15 +50,15 @@
 
 - [x] API `Loading` 상태 UI 대응
 - [x] 데이터 없음 상태 UI 대응
-- [ ] HTTP 상태에 따른 `Error` 처리
-  - [ ] 200 - OK
-  - [ ] 201 - Created
-  - [ ] 302 - Found(HTTP 1.0)
-  - [ ] 304 - Not Modified
-  - [ ] 401 - Unauthorized
-  - [ ] 404 - Not Found
-  - [ ] 500 - Internal Server Error
-  - [ ] 503 - Service Unavailable
+- [x] HTTP 상태에 따른 `Error` 처리
+  - [x] 200 - OK
+  - [x] 201 - Created
+  - [x] 302 - Found(HTTP 1.0)
+  - [x] 304 - Not Modified
+  - [x] 401 - Unauthorized
+  - [x] 404 - Not Found
+  - [x] 500 - Internal Server Error
+  - [x] 503 - Service Unavailable
 
 ---
 

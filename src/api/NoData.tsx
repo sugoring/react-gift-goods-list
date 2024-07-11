@@ -1,4 +1,3 @@
-// src/api/NoData.tsx
 import styled from '@emotion/styled';
 
 const NoDataWrapper = styled.div`
