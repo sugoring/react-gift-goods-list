@@ -18,7 +18,11 @@ export const HeroSection = ({ themeKey }: Props) => {
     return <Loading />;
   }
 
-  if (error || !data || !Array.isArray(data.themes)) {
+  if (error) {
+    return <NoData message={error} />;
+  }
+
+  if (!data || !Array.isArray(data.themes)) {
     return <NoData />;
   }
 
