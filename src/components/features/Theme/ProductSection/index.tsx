@@ -18,7 +18,7 @@ export const ProductSection = ({ themeKey }: Props) => {
     data: products,
     isLoading,
     error,
-  } = useFetch<{ products: ProductData[] }>('/api/v1/themes/${themeKey}/products', {
+  } = useFetch<{ products: ProductData[] }>(`/api/v1/themes/${themeKey}/products`, {
     maxResults: 20,
   });
 

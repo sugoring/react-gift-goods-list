@@ -5,6 +5,8 @@ export type ThemeData = {
   title: string;
   description?: string;
   backgroundColor: string;
+  imageURL: string;  // api
+  name: string;      // api
 };
 
 export type RankingFilterOption = {

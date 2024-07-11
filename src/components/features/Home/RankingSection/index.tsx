@@ -1,4 +1,3 @@
-// src/components/features/Home/RankingSection/index.tsx
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
