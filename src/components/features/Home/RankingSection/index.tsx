@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 
+import axiosInstance from '@/api/axiosInstance';
 import { Loading } from '@/api/Loading';
 import { NoData } from '@/api/NoData';
-import { useFetch } from '@/api/useFetch';
 import { Container } from '@/components/common/layouts/Container';
 import { breakpoints } from '@/styles/variants';
 import type { ProductData, RankingFilterOption } from '@/types';
@@ -11,14 +12,23 @@ import type { ProductData, RankingFilterOption } from '@/types';
 import { RankingFilter } from './Filter';
 import { RankingList } from './List';
 
+const fetchRankingProducts = async (filterOption: RankingFilterOption) => {
+  const response = await axiosInstance.get('/api/v1/ranking/products', {
+    params: filterOption,
+  });
+  return response.data;
+};
+
 export const RankingSection = () => {
   const [filterOption, setFilterOption] = useState<RankingFilterOption>({
     targetType: 'ALL',
     rankType: 'MANY_WISH',
   });
-  const { data, isLoading, error } = useFetch<{ products: ProductData[] }>(
-    '/api/v1/ranking/products',
-    filterOption,
+
+  const { data, isLoading, error } = useQuery<{ products: ProductData[] }>(
+    ['rankingProducts', filterOption],
+    () => fetchRankingProducts(filterOption),
+    { keepPreviousData: true },
   );
 
   if (isLoading) {
