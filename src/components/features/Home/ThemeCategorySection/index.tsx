@@ -19,7 +19,11 @@ export const ThemeCategorySection = () => {
     return <Loading />;
   }
 
-  if (error || !data || !Array.isArray(data.themes) || data.themes.length === 0) {
+  if (error) {
+    return <NoData message={error} />;
+  }
+
+  if (!data || !Array.isArray(data.themes) || data.themes.length === 0) {
     return <NoData />;
   }
 
@@ -36,7 +40,7 @@ export const ThemeCategorySection = () => {
         >
           {themes.map((theme) => (
             <Link key={theme.id} to={getDynamicPath.theme(theme.key)}>
-              <ThemeCategoryItem image={theme.imageURL} label={theme.name} />
+              <ThemeCategoryItem image={theme.imageURL} label={theme.label} />
             </Link>
           ))}
         </Grid>
