@@ -1,9 +1,10 @@
+// src/components/features/Home/RankingSection/index.tsx
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Loading } from '@/api/Loading';
 import { NoData } from '@/api/NoData';
-import { fetchRankingProducts } from '@/api/rankingApi';
+import { useFetch } from '@/api/useFetch';
 import { Container } from '@/components/common/layouts/Container';
 import { breakpoints } from '@/styles/variants';
 import type { ProductData, RankingFilterOption } from '@/types';
@@ -16,32 +17,20 @@ export const RankingSection = () => {
     targetType: 'ALL',
     rankType: 'MANY_WISH',
   });
-  const [productList, setProductList] = useState<ProductData[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      setIsLoading(true);
-      try {
-        const data = await fetchRankingProducts(filterOption);
-        setProductList(data);
-      } catch (error) {
-        console.error('Failed to fetch ranking products', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getProducts();
-  }, [filterOption]);
+  const {
+    data: productList,
+    isLoading,
+    error,
+  } = useFetch<ProductData[]>('/api/v1/ranking/products', filterOption);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (productList.length === 0) {
+  if (error || !productList || productList.length === 0) {
     return <NoData />;
   }
+
   return (
     <Wrapper>
       <Container>
