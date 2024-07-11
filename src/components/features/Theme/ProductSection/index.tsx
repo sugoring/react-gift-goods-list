@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef } from 'react';
+import type { QueryFunctionContext } from 'react-query';
 import { useInfiniteQuery } from 'react-query';
 
 import axiosInstance from '@/api/axiosInstance';
@@ -14,14 +15,9 @@ type Props = {
   themeKey: string;
 };
 
-const fetchProducts = async ({
-  pageParam = 1,
-  queryKey,
-}: {
-  pageParam?: number;
-  queryKey: [string, string];
-}) => {
-  const [, themeKey] = queryKey;
+const fetchProducts = async (context: QueryFunctionContext<[string, string], number>) => {
+  const [, themeKey] = context.queryKey;
+  const pageParam = context.pageParam ?? 1;
   const response = await axiosInstance.get(`/api/v1/themes/${themeKey}/products`, {
     params: {
       maxResults: 20,
