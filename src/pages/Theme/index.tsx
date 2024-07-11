@@ -1,38 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { Navigate, useParams } from 'react-router-dom';
 
+import axiosInstance from '@/api/axiosInstance';
 import { Loading } from '@/api/Loading';
-import { fetchThemes } from '@/api/themeApi';
 import { HeroSection } from '@/components/features/Theme/HeroSection';
 import { ProductSection } from '@/components/features/Theme/ProductSection';
 import { RouterPath } from '@/routes/path';
 import type { ThemeData } from '@/types';
 
+const fetchThemes = async () => {
+  const response = await axiosInstance.get('/api/v1/themes');
+  return response.data.themes;
+};
+
 export const ThemePage = () => {
   const { themeKey = '' } = useParams<{ themeKey: string }>();
-  const [currentTheme, setCurrentTheme] = useState<ThemeData | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const getThemes = async () => {
-      try {
-        const themes = await fetchThemes();
-        const theme = themes.find((t) => t.key === themeKey);
-        setCurrentTheme(theme || null);
-      } catch (error) {
-        console.error('Error fetching themes:', error);
-        setCurrentTheme(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data: themes, isLoading, error } = useQuery<ThemeData[]>('themes', fetchThemes);
 
-    getThemes();
-  }, [themeKey]);
-
-  if (loading) {
+  if (isLoading) {
     return <Loading />;
   }
+
+  if (error || !themes) {
+    return <Navigate to={RouterPath.home} />;
+  }
+
+  const currentTheme = themes.find((theme) => theme.key === themeKey);
 
   if (!currentTheme) {
     return <Navigate to={RouterPath.home} />;
