@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 
 import { Loading } from '@/api/Loading';
 import { NoData } from '@/api/NoData';
-import { fetchThemes } from '@/api/themeApi';
+import { useFetch } from '@/api/useFetch';
 import { Container } from '@/components/common/layouts/Container';
 import { breakpoints } from '@/styles/variants';
 import type { ThemeData } from '@/types';
@@ -13,36 +12,22 @@ type Props = {
 };
 
 export const HeroSection = ({ themeKey }: Props) => {
-  const [currentTheme, setCurrentTheme] = useState<ThemeData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const getThemes = async () => {
-      setIsLoading(true);
-      try {
-        const themes = await fetchThemes();
-        const theme = themes.find((t) => t.key === themeKey);
-        setCurrentTheme(theme || null);
-      } catch (error) {
-        console.error('Error fetching themes:', error);
-        setCurrentTheme(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (themeKey) {
-      getThemes();
-    }
-  }, [themeKey]);
+  const { data, isLoading, error } = useFetch<{ themes: ThemeData[] }>('/api/v1/themes');
 
   if (isLoading) {
     return <Loading />;
   }
 
+  if (error || !data || !Array.isArray(data.themes)) {
+    return <NoData />;
+  }
+
+  const currentTheme = data.themes.find((theme) => theme.key === themeKey);
+
   if (!currentTheme) {
     return <NoData />;
   }
+
   const { backgroundColor, label, title, description } = currentTheme;
 
   return (

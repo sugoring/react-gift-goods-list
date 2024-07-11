@@ -14,21 +14,22 @@ type Props = {
 };
 
 export const ProductSection = ({ themeKey }: Props) => {
-  const {
-    data: products,
-    isLoading,
-    error,
-  } = useFetch<{ products: ProductData[] }>(`/api/v1/themes/${themeKey}/products`, {
-    maxResults: 20,
-  });
+  const { data, isLoading, error } = useFetch<{ products: ProductData[] }>(
+    `/api/v1/themes/${themeKey}/products`,
+    {
+      maxResults: 20,
+    },
+  );
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error || !products || products.products.length === 0) {
+  if (error || !data || !Array.isArray(data.products) || data.products.length === 0) {
     return <NoData />;
   }
+
+  const { products } = data;
 
   return (
     <Wrapper>
@@ -40,7 +41,7 @@ export const ProductSection = ({ themeKey }: Props) => {
           }}
           gap={16}
         >
-          {products.products.map(({ id, imageURL, name, price, brandInfo }) => (
+          {products.map(({ id, imageURL, name, price, brandInfo }) => (
             <DefaultItems
               key={id}
               imageSrc={imageURL}
