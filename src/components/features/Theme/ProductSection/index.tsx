@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import axiosInstance from '@/api/axiosInstance';
 import { Loading } from '@/api/Loading';
@@ -22,7 +22,7 @@ export const ProductSection = ({ themeKey }: Props) => {
   const [page, setPage] = useState<number>(1);
   const loader = useRef<HTMLDivElement | null>(null);
 
-  const fetchProducts = async (page: number) => {
+  const fetchProducts = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await axiosInstance.get(`/api/v1/themes/${themeKey}/products`, {
@@ -41,11 +41,11 @@ export const ProductSection = ({ themeKey }: Props) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [themeKey, page]);
 
   useEffect(() => {
-    fetchProducts(page);
-  }, [page, themeKey]);
+    fetchProducts();
+  }, [fetchProducts, themeKey]);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -54,13 +54,14 @@ export const ProductSection = ({ themeKey }: Props) => {
       }
     });
 
-    if (loader.current) {
-      observer.observe(loader.current);
+    const currentLoader = loader.current;
+    if (currentLoader) {
+      observer.observe(currentLoader);
     }
 
     return () => {
-      if (loader.current) {
-        observer.unobserve(loader.current);
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
       }
     };
   }, []);
