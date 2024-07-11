@@ -1,4 +1,3 @@
-// src/components/features/Home/ThemeCategorySection/index.tsx
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 
@@ -14,15 +13,17 @@ import type { ThemeData } from '@/types';
 import { ThemeCategoryItem } from './ThemeCategoryItem';
 
 export const ThemeCategorySection = () => {
-  const { data: themes, isLoading, error } = useFetch<ThemeData[]>('/api/v1/themes');
+  const { data, isLoading, error } = useFetch<{ themes: ThemeData[] }>('/api/v1/themes');
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error || !themes || themes.length === 0) {
+  if (error || !data || !Array.isArray(data.themes) || data.themes.length === 0) {
     return <NoData />;
   }
+
+  const { themes } = data;
 
   return (
     <Wrapper>
