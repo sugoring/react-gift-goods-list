@@ -25,7 +25,11 @@ export const ProductSection = ({ themeKey }: Props) => {
     return <Loading />;
   }
 
-  if (error || !data || !Array.isArray(data.products) || data.products.length === 0) {
+  if (error) {
+    return <NoData message={error} />;
+  }
+
+  if (!data || !Array.isArray(data.products) || data.products.length === 0) {
     return <NoData />;
   }
 

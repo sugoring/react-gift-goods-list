@@ -48,10 +48,8 @@
 
 ### 2단계 - `Loading`, `Error` 상태 핸들링 하기
 
-체크박스로 작성한 요구사항입니다:
-
-- [ ] API `Loading` 상태 UI 대응
-- [ ] 데이터 없음 상태 UI 대응
+- [x] API `Loading` 상태 UI 대응
+- [x] 데이터 없음 상태 UI 대응
 - [ ] HTTP 상태에 따른 `Error` 처리
   - [ ] 200 - OK
   - [ ] 201 - Created

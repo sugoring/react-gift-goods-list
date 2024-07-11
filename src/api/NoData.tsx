@@ -1,3 +1,4 @@
+// src/api/NoData.tsx
 import styled from '@emotion/styled';
 
 const NoDataWrapper = styled.div`
@@ -8,8 +9,12 @@ const NoDataWrapper = styled.div`
   width: 100%;
 `;
 
-export const NoData = () => (
+type NoDataProps = {
+  message?: string;
+};
+
+export const NoData = ({ message = '데이터가 없습니다' }: NoDataProps) => (
   <NoDataWrapper>
-    <div>데이터가 없습니다</div>
+    <div>{message}</div>
   </NoDataWrapper>
 );
