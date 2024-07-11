@@ -16,19 +16,20 @@ export const RankingSection = () => {
     targetType: 'ALL',
     rankType: 'MANY_WISH',
   });
-  const {
-    data: productList,
-    isLoading,
-    error,
-  } = useFetch<ProductData[]>('/api/v1/ranking/products', filterOption);
+  const { data, isLoading, error } = useFetch<{ products: ProductData[] }>(
+    '/api/v1/ranking/products',
+    filterOption,
+  );
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error || !productList || productList.length === 0) {
+  if (error || !data || !Array.isArray(data.products) || data.products.length === 0) {
     return <NoData />;
   }
+
+  const { products: productList } = data;
 
   return (
     <Wrapper>
