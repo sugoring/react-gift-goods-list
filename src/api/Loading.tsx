@@ -1,6 +1,5 @@
+// src/api/Loading.tsx
 import styled from '@emotion/styled';
-
-import logo from '@/assets/logo.png'; // 로고 이미지 경로
 
 const LoadingWrapper = styled.div`
   display: flex;
@@ -11,19 +10,12 @@ const LoadingWrapper = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-`;
-
-const LoadingText = styled.div`
-  font-size: 1.2rem;
-  color: #333;
+  width: 150px;
+  height: 150px;
 `;
 
 export const Loading = () => (
   <LoadingWrapper>
-    <Logo src={logo} alt="Loading logo" />
-    <LoadingText>Loading...</LoadingText>
+    <Logo src="https://i.gifer.com/XOsX.gif" alt="Loading" />
   </LoadingWrapper>
 );
