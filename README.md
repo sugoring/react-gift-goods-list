@@ -69,9 +69,7 @@
    - [x] 스크롤이 일정 위치에 도달하면 추가 데이터를 요청하여 화면에 추가한다.
 
 2. **Axios를 사용한 API 호출을 react-query로 대체**
-   - [ ] Axios로 구현된 API 호출을 react-query를 사용하여 대체한다.
-   - [ ] react-query를 설정하고 초기화한다.
-   - [ ] API 호출을 react-query의 query 함수를 이용해 관리하고 상태를 추적한다.
+   - [x] Axios로 구현된 API 호출을 react-query를 사용하여 대체한다.
 
 ---
 
