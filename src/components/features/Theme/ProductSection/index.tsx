@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
+import axiosInstance from '@/api/axiosInstance';
 import { Loading } from '@/api/Loading';
 import { NoData } from '@/api/NoData';
-import { useFetch } from '@/api/useFetch';
 import { DefaultItems } from '@/components/common/Item/Default';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
@@ -14,12 +16,33 @@ type Props = {
 };
 
 export const ProductSection = ({ themeKey }: Props) => {
-  const { data, isLoading, error } = useFetch<{ products: ProductData[] }>(
-    `/api/v1/themes/${themeKey}/products`,
-    {
-      maxResults: 20,
-    },
-  );
+  const [data, setData] = useState<{ products: ProductData[] } | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axiosInstance.get(`/api/v1/themes/${themeKey}/products`, {
+          params: {
+            maxResults: 20,
+          },
+        });
+        setData(response.data);
+      } catch (err) {
+        if (axios.isAxiosError(err) && err.response) {
+          setError(`Error ${err.response.status}: ${err.response.data.message}`);
+        } else {
+          setError('An error occurred while fetching data.');
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [themeKey]); // useEffect will run whenever themeKey changes
 
   if (isLoading) {
     return <Loading />;
