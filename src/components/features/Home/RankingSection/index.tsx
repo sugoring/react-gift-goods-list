@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
+import { Loading } from '@/api/Loading';
+import { NoData } from '@/api/NoData';
 import { fetchRankingProducts } from '@/api/rankingApi';
 import { Container } from '@/components/common/layouts/Container';
 import { breakpoints } from '@/styles/variants';
@@ -15,20 +17,31 @@ export const RankingSection = () => {
     rankType: 'MANY_WISH',
   });
   const [productList, setProductList] = useState<ProductData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getProducts = async () => {
+      setIsLoading(true);
       try {
         const data = await fetchRankingProducts(filterOption);
         setProductList(data);
       } catch (error) {
         console.error('Failed to fetch ranking products', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     getProducts();
   }, [filterOption]);
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (productList.length === 0) {
+    return <NoData />;
+  }
   return (
     <Wrapper>
       <Container>
