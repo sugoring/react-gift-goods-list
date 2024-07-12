@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 
+import { Loading } from '@/api/Loading';
 import { fetchThemes } from '@/api/themeApi';
 import { HeroSection } from '@/components/features/Theme/HeroSection';
 import { ProductSection } from '@/components/features/Theme/ProductSection';
@@ -30,7 +31,7 @@ export const ThemePage = () => {
   }, [themeKey]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!currentTheme) {

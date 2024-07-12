@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import { fetchThemeProduct } from '@/api/themeApi';
+import axiosInstance from '@/api/axiosInstance';
+import { Loading } from '@/api/Loading';
+import { NoData } from '@/api/NoData';
 import { DefaultItems } from '@/components/common/Item/Default';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
@@ -13,20 +16,47 @@ type Props = {
 };
 
 export const ProductSection = ({ themeKey }: Props) => {
-  const [products, setProducts] = useState<ProductData[]>([]);
+  const [data, setData] = useState<{ products: ProductData[] } | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const getProducts = async () => {
+    const fetchData = async () => {
+      setIsLoading(true);
       try {
-        const data = await fetchThemeProduct(themeKey, 20); // Request 20 products
-        setProducts(data.products);
-      } catch (error) {
-        console.error('Failed to fetch theme products', error);
+        const response = await axiosInstance.get(`/api/v1/themes/${themeKey}/products`, {
+          params: {
+            maxResults: 20,
+          },
+        });
+        setData(response.data);
+      } catch (err) {
+        if (axios.isAxiosError(err) && err.response) {
+          setError(`Error ${err.response.status}: ${err.response.data.message}`);
+        } else {
+          setError('An error occurred while fetching data.');
+        }
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    getProducts();
-  }, [themeKey]);
+    fetchData();
+  }, [themeKey]); // useEffect will run whenever themeKey changes
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <NoData message={error} />;
+  }
+
+  if (!data || !Array.isArray(data.products) || data.products.length === 0) {
+    return <NoData />;
+  }
+
+  const { products } = data;
 
   return (
     <Wrapper>

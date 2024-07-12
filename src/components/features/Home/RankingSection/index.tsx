@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { fetchRankingProducts } from '@/api/rankingApi';
+import { Loading } from '@/api/Loading';
+import { NoData } from '@/api/NoData';
+import { useFetch } from '@/api/useFetch';
 import { Container } from '@/components/common/layouts/Container';
 import { breakpoints } from '@/styles/variants';
 import type { ProductData, RankingFilterOption } from '@/types';
@@ -14,20 +16,20 @@ export const RankingSection = () => {
     targetType: 'ALL',
     rankType: 'MANY_WISH',
   });
-  const [productList, setProductList] = useState<ProductData[]>([]);
+  const { data, isLoading, error } = useFetch<{ products: ProductData[] }>(
+    '/api/v1/ranking/products',
+    filterOption,
+  );
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const data = await fetchRankingProducts(filterOption);
-        setProductList(data);
-      } catch (error) {
-        console.error('Failed to fetch ranking products', error);
-      }
-    };
+  if (isLoading) {
+    return <Loading />;
+  }
 
-    getProducts();
-  }, [filterOption]);
+  if (error || !data || !Array.isArray(data.products) || data.products.length === 0) {
+    return <NoData />;
+  }
+
+  const { products: productList } = data;
 
   return (
     <Wrapper>

@@ -46,19 +46,19 @@
 
 ---
 
-### 2단계 - Error, Loading Status 핸들링 하기
+### 2단계 - `Loading`, `Error` 상태 핸들링 하기
 
-**🚀 Getting Started**
-
-- 비동기 데이터 요청 시 발생할 수 있는 Loading, Error를 생각하고 적용합니다.
-- 유저 관점에서 Loading과 Error를 어떻게 전달하면 좋을지 고민합니다.
-
-**📝 Requirements**
-
-- 본인만의 기준으로 일관된 코드를 작성합니다.
-- 각 API에서 Loading 상태에 대한 UI 대응을 합니다.
-- 데이터가 없는 경우에 대한 UI 대응을 합니다.
-- Http Status에 따라 Error를 다르게 처리합니다.
+- [x] API `Loading` 상태 UI 대응
+- [x] 데이터 없음 상태 UI 대응
+- [x] HTTP 상태에 따른 `Error` 처리
+  - [x] 200 - OK
+  - [x] 201 - Created
+  - [x] 302 - Found(HTTP 1.0)
+  - [x] 304 - Not Modified
+  - [x] 401 - Unauthorized
+  - [x] 404 - Not Found
+  - [x] 500 - Internal Server Error
+  - [x] 503 - Service Unavailable
 
 ---
 
