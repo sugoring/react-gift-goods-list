@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import type { QueryFunctionContext } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 
 import axiosInstance from '@/api/axiosInstance';
 import { Loading } from '@/api/Loading';
@@ -9,54 +10,64 @@ import { DefaultItems } from '@/components/common/Item/Default';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
 import { breakpoints } from '@/styles/variants';
-import type { ProductData } from '@/types';
 
 type Props = {
   themeKey: string;
 };
 
+const fetchProducts = async (context: QueryFunctionContext<[string, string], number>) => {
+  const [, themeKey] = context.queryKey;
+  const pageParam = context.pageParam ?? 1;
+  const response = await axiosInstance.get(`/api/v1/themes/${themeKey}/products`, {
+    params: {
+      maxResults: 20,
+      pageToken: pageParam,
+    },
+  });
+  return response.data;
+};
+
 export const ProductSection = ({ themeKey }: Props) => {
-  const [data, setData] = useState<{ products: ProductData[] } | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    ['products', themeKey],
+    fetchProducts,
+    {
+      getNextPageParam: (lastPage) => lastPage.nextPageToken || false,
+    },
+  );
+
+  const loader = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axiosInstance.get(`/api/v1/themes/${themeKey}/products`, {
-          params: {
-            maxResults: 20,
-          },
-        });
-        setData(response.data);
-      } catch (err) {
-        if (axios.isAxiosError(err) && err.response) {
-          setError(`Error ${err.response.status}: ${err.response.data.message}`);
-        } else {
-          setError('An error occurred while fetching data.');
-        }
-      } finally {
-        setIsLoading(false);
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasNextPage) {
+        fetchNextPage();
+      }
+    });
+
+    const currentLoader = loader.current;
+    if (currentLoader) {
+      observer.observe(currentLoader);
+    }
+
+    return () => {
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
       }
     };
-
-    fetchData();
-  }, [themeKey]); // useEffect will run whenever themeKey changes
+  }, [fetchNextPage, hasNextPage]);
 
   if (isLoading) {
     return <Loading />;
   }
 
   if (error) {
-    return <NoData message={error} />;
+    return <NoData message="An error occurred while fetching data." />;
   }
 
-  if (!data || !Array.isArray(data.products) || data.products.length === 0) {
+  if (!data || data.pages.length === 0) {
     return <NoData />;
   }
-
-  const { products } = data;
 
   return (
     <Wrapper>
@@ -68,16 +79,20 @@ export const ProductSection = ({ themeKey }: Props) => {
           }}
           gap={16}
         >
-          {products.map(({ id, imageURL, name, price, brandInfo }) => (
-            <DefaultItems
-              key={id}
-              imageSrc={imageURL}
-              title={name}
-              amount={price.sellingPrice}
-              subtitle={brandInfo.name}
-            />
-          ))}
+          {data.pages
+            .flatMap((page) => page.products)
+            .map(({ id, imageURL, name, price, brandInfo }) => (
+              <DefaultItems
+                key={id}
+                imageSrc={imageURL}
+                title={name}
+                amount={price.sellingPrice}
+                subtitle={brandInfo.name}
+              />
+            ))}
         </Grid>
+        {isLoading && <Loading />}
+        <div ref={loader} />
       </Container>
     </Wrapper>
   );

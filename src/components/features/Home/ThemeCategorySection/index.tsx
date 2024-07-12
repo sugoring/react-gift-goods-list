@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
+import axiosInstance from '@/api/axiosInstance';
 import { Loading } from '@/api/Loading';
 import { NoData } from '@/api/NoData';
-import { useFetch } from '@/api/useFetch';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
 import { getDynamicPath } from '@/routes/path';
@@ -12,15 +13,20 @@ import type { ThemeData } from '@/types';
 
 import { ThemeCategoryItem } from './ThemeCategoryItem';
 
+const fetchThemes = async () => {
+  const response = await axiosInstance.get('/api/v1/themes');
+  return response.data;
+};
+
 export const ThemeCategorySection = () => {
-  const { data, isLoading, error } = useFetch<{ themes: ThemeData[] }>('/api/v1/themes');
+  const { data, isLoading, error } = useQuery<{ themes: ThemeData[] }>('themes', fetchThemes);
 
   if (isLoading) {
     return <Loading />;
   }
 
   if (error) {
-    return <NoData message={error} />;
+    return <NoData message="An error occurred while fetching data." />;
   }
 
   if (!data || !Array.isArray(data.themes) || data.themes.length === 0) {

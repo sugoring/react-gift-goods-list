@@ -1,3 +1,4 @@
+// src/api/Loading.tsx
 import styled from '@emotion/styled';
 
 const LoadingWrapper = styled.div`
@@ -8,8 +9,13 @@ const LoadingWrapper = styled.div`
   width: 100%;
 `;
 
+const Logo = styled.img`
+  width: 150px;
+  height: 150px;
+`;
+
 export const Loading = () => (
   <LoadingWrapper>
-    <div>Loading...</div>
+    <Logo src="https://i.gifer.com/XOsX.gif" alt="Loading" />
   </LoadingWrapper>
 );

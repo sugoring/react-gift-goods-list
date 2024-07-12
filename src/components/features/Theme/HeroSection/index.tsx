@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
+import { useQuery } from 'react-query';
 
+import axiosInstance from '@/api/axiosInstance';
 import { Loading } from '@/api/Loading';
 import { NoData } from '@/api/NoData';
-import { useFetch } from '@/api/useFetch';
 import { Container } from '@/components/common/layouts/Container';
 import { breakpoints } from '@/styles/variants';
 import type { ThemeData } from '@/types';
@@ -11,15 +12,20 @@ type Props = {
   themeKey: string;
 };
 
+const fetchThemes = async () => {
+  const response = await axiosInstance.get('/api/v1/themes');
+  return response.data;
+};
+
 export const HeroSection = ({ themeKey }: Props) => {
-  const { data, isLoading, error } = useFetch<{ themes: ThemeData[] }>('/api/v1/themes');
+  const { data, isLoading, error } = useQuery<{ themes: ThemeData[] }>('themes', fetchThemes);
 
   if (isLoading) {
     return <Loading />;
   }
 
   if (error) {
-    return <NoData message={error} />;
+    return <NoData message="An error occurred while fetching data." />;
   }
 
   if (!data || !Array.isArray(data.themes)) {
